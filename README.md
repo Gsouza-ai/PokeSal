@@ -4,7 +4,7 @@ Projeto acadêmico: simulador de batalhas, ambientado no Estacionamento da UCSal
 
 ## Sobre
 
-Cada treinador escolhe 1 Pokésal inicial e batalha por turnos, com vantagens elementais (Fogo, Água, Planta), efeitos de terreno e status de batalha (Queimado, Envenenado, Paralisado).
+Cada treinador escolhe 1 Pokesal inicial e batalha por turnos, com vantagens elementais (Fogo, Água, Planta), efeitos de terreno e status de batalha (Queimado, Envenenado, Paralisado).
 
 ## Tecnologias
 
