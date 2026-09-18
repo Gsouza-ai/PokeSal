@@ -29,43 +29,43 @@ public class Batalha {
 
     // Decide quem ataca primeiro, olhando o SPD (velocidade) de cada Pokesal.
     public Pokesal determinarIniciativa() {
-        Pokesal p1 = treinador1.getPokesalInicial();
-        Pokesal p2 = treinador2.getPokesalInicial();
+        Pokesal1 = treinador1.getPokesalInicial();
+        Pokesal2 = treinador2.getPokesalInicial();
 
-        if (p1.getSpd() >= p2.getSpd()) {
-            return p1;
+        if (pokesal1.getSpd() >= pokesal2.getSpd()) {
+            return pokesal1;
         } else {
-            return p2;
+            return pokesal2;
         }
     }
 
     // Executa uma rodada simples: quem tem mais SPD ataca primeiro com o golpe indicado.
     public void proximoTurno(Golpe golpeTreinador1, Golpe golpeTreinador2) {
 
-        Pokesal p1 = treinador1.getPokesalInicial();
-        Pokesal p2 = treinador2.getPokesalInicial();
+        Pokesal1 = treinador1.getPokesalInicial();
+        Pokesal2 = treinador2.getPokesalInicial();
 
         System.out.println("\n--- Rodada " + rodadaAtual + " ---");
 
         Pokesal primeiro = determinarIniciativa();
 
-        if (primeiro == p1) {
-            p1.atacar(p2, golpeTreinador1, terreno);
-            if (p2.estaVivo()) {
-                p2.atacar(p1, golpeTreinador2, terreno);
+        if (primeiro == pokesal1) {
+            pokesal1.atacar(pokesal2, golpeTreinador1, terreno);
+            if (pokesal2.estaVivo()) {
+                pokesal2.atacar(pokesal1, golpeTreinador2, terreno);
             }
         } else {
-            p2.atacar(p1, golpeTreinador2, terreno);
-            if (p1.estaVivo()) {
-                p1.atacar(p2, golpeTreinador1, terreno);
+            pokesal2.atacar(pokesal1, golpeTreinador2, terreno);
+            if (pokesal1.estaVivo()) {
+                pokesal1.atacar(pokesal2, golpeTreinador1, terreno);
             }
         }
 
         aplicarEfeitosFimDeTurno();
 
         // reseta coisas que valem só para 1 rodada
-        p1.setExaustoTurnoAtual(false);
-        p2.setExaustoTurnoAtual(false);
+        pokesal1.setExaustoTurnoAtual(false);
+        pokesal2.setExaustoTurnoAtual(false);
         treinador1.reiniciarEsquiva();
         treinador2.reiniciarEsquiva();
 
@@ -74,33 +74,33 @@ public class Batalha {
 
     // Aplica status (queimado, envenenado, paralisado) e efeito de terreno no final do turno.
     public void aplicarEfeitosFimDeTurno() {
-        Pokesal p1 = treinador1.getPokesalInicial();
-        Pokesal p2 = treinador2.getPokesalInicial();
+        Pokesal pokesal1 = treinador1.getPokesalInicial();
+        Pokesal pokesal2 = treinador2.getPokesalInicial();
 
-        aplicarStatusEmPokesal(p1);
-        aplicarStatusEmPokesal(p2);
+        aplicarStatusEmPokesal(pokesal1);
+        aplicarStatusEmPokesal(pokesal2);
 
-        terreno.aplicarEfeitoPassivo(p1);
-        terreno.aplicarEfeitoPassivo(p2);
+        terreno.aplicarEfeitoPassivo(pokesal1);
+        terreno.aplicarEfeitoPassivo(pokesal2);
     }
 
-    private void aplicarStatusEmPokesal(Pokesal p) {
-        for (int i = 0; i < p.getStatus().size(); i++) {
-            StatusEffect efeito = p.getStatus().get(i);
-            efeito.aplicarEfeito(p);
+    private void aplicarStatusEmPokesal(Pokesal pokesal) {
+        for (int i = 0; i < pokesal.getStatus().size(); i++) {
+            StatusEffect efeito = pokesal.getStatus().get(i);
+            efeito.aplicarEfeito(pokesal);
         }
     }
 
     // Verifica se a batalha já acabou (algum Pokesal morreu).
     public boolean verificarFimBatalha() {
-        Pokesal p1 = treinador1.getPokesalInicial();
-        Pokesal p2 = treinador2.getPokesalInicial();
+        Pokesal pokesal1 = treinador1.getPokesalInicial();
+        Pokesal pokesal2 = treinador2.getPokesalInicial();
 
-        if (!p1.estaVivo()) {
+        if (!pokesal1.estaVivo()) {
             System.out.println("\n" + treinador2.getNome() + " venceu a batalha!");
             return true;
         }
-        if (!p2.estaVivo()) {
+        if (!pokesal2.estaVivo()) {
             System.out.println("\n" + treinador1.getNome() + " venceu a batalha!");
             return true;
         }
