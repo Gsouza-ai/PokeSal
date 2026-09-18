@@ -4,11 +4,11 @@ import java.util.List;
 public class Mochila {
 
     private List<Item> itens;
-    private int limitePorBatalha; // máximo de itens usados por batalha
+    private int limitePorBatalha; 
 
     public Mochila() {
         this.itens = new ArrayList<Item>();
-        this.limitePorBatalha = 2; // regra: no máximo 2 itens por batalha
+        this.limitePorBatalha = 2; 
     }
 
     public List<Item> getItens() {
@@ -24,7 +24,6 @@ public class Mochila {
     }
 
     // Verifica se ainda dá pra usar item:
-    // só pode a partir da 2ª rodada e respeitando o limite por batalha.
     public boolean podeUsarItem(int rodadaAtual, int itensUsadosNaBatalha) {
         if (rodadaAtual < 2) {
             System.out.println("Itens só podem ser usados a partir da 2ª rodada!");
