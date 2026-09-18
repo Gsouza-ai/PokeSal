@@ -3,11 +3,11 @@ public class Golpe {
     private String nomeDoGolpe;
     private TipoElemental tipoElemental;
     private double poderBase;
-    private double precisao; // chance de acertar, de 0.0 a 1.0   
+    private double precisao; 
     
 
     public Golpe(String nomeDoGolpe, TipoElemental tipoElemental, double poderBase, double precisao) {
-        this.nome = nomeDoGolpe;
+        this.nomeDoGolpe = nomeDoGolpe;
         this.tipoElemental = tipoElemental;
         this.poderBase = poderBase;
         this.precisao = precisao;
@@ -32,32 +32,32 @@ public class Golpe {
     // Executa o golpe e devolve o dano final causado e classe tsunami sobrescreve esse metodo
     public double executar(Pokesal atacante, Pokesal defensor, Terreno terreno) {
 
-        // 1. testa se o golpe acerta, usando a precisão
-        double sorteio = Math.random();
-        if (sorteio > precisao) {
-            System.out.println(atacante.getNome() + " usou " + nome + ", mas errou o golpe!");
+        //  testa se o golpe acerta, usando a precisão
+        double sorteioPrecisao = Math.random();
+        if (sorteioPrecisao > precisao) {
+            System.out.println(atacante.getNome() + " usou " + nomeDoGolpe + ", mas errou o golpe!");
             return 0;
         }
 
-        // 2. calcula o dano base (bem simples: poder do golpe + ataque - defesa)
+        // calcula o dano base 
         double dano = poderBase + atacante.getAtk() - defensor.getDef();
         if (dano < 0) {
             dano = 0;
         }
 
-        // 3. aplica a vantagem elemental
+        // aplica a vantagem elemental
         double multiplicador = tipo.calcularMultiplicador(defensor.getTipo());
         dano = dano * multiplicador;
 
-        // 4. aplica o efeito do terreno (se tiver)
+        //  aplica o efeito do terreno 
         if (terreno != null) {
             dano = terreno.aplicarEfeitoAtivo(this, dano);
         }
 
-        // 5. aplica o dano no defensor
+        //  aplica o dano no defensor
         defensor.receberDano(dano);
 
-        System.out.println(atacante.getNome() + " usou " + nome + " em " + defensor.getNome()
+        System.out.println(atacante.getNome() + " usou " + nomeDoGolpe + " em " + defensor.getNome()
                 + " e causou " + dano + " de dano!");
 
         return dano;
