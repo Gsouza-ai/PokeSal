@@ -17,7 +17,7 @@ public class PokeSal {
     public PokeSal(String nome, double hpMaximo, double atk, double def, double spd, TipoElemental tipo) {
         this.nome = nome;
         this.hpMaximo = hpMaximo;
-        this.hpAtual = hpMaximo; // começa com a vida cheia
+        this.hpAtual = hpMaximo;
         this.atk = atk;
         this.def = def;
         this.spd = spd;
@@ -113,7 +113,7 @@ public class PokeSal {
             System.out.println(nome + " está exausto e não pode atacar nesta rodada!");
             return 0;
         }
-        return golpe.executar(); //criar método exectuar na classe golpe!!!
+        return golpe.executar();
     }
 
     // Recebe dano e não deixa o HP ficar negativo.
@@ -140,18 +140,14 @@ public class PokeSal {
         }
     }
 
-    // Remove todos os status (usado pelo item Antidote).
     public void limparStatus() {
         status.clear();
     }
 
-    // Verifica se o Pokesal está vivo.
     public boolean estaVivo() {
         return hpAtual > 0;
     }
 
-    // Verifica se o Pokesal pode atacar nesta rodada
-    // (não pode se estiver exausto, por exemplo, depois de usar Tsunami).
     public boolean isAptoAAtacar() {
         return !exaustoTurnoAtual && estaVivo();
     }
