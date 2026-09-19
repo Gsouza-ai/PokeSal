@@ -1,15 +1,24 @@
+/**
+ * Classe item.
+ **/
 public abstract class Item {
-    private String nome;
+  private String nomeItem;
 
-    public Item(String nome) {
-        this.nome = nome;
-    }
+  /**
+   * Método construtor.
+   *
+   * @param nomeItem passa o nome do item.
+   **/
+  public Item(String nomeItem) {
+    this.nomeItem = nomeItem;
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public String getNome() {
+    return nomeItem;
+  }
 
-    // Cada item concreto decide o que acontece quando é usado.
-    public abstract void aplicarEfeito(PokeSal pokesal);
-
+  /**
+   * Cada item concreto decide o que acontece quando é usado.
+   **/
+  public abstract void aplicarEfeito(PokeSal pokesal);
 }
