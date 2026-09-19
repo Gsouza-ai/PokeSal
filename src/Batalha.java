@@ -28,9 +28,9 @@ public class Batalha {
     }
 
     // Decide quem ataca primeiro, olhando o SPD (velocidade) de cada Pokesal.
-    public Pokesal determinarIniciativa() {
-        Pokesal1 = treinador1.getPokesalInicial();
-        Pokesal2 = treinador2.getPokesalInicial();
+    public PokeSal determinarIniciativa() {
+        PokeSal pokesal1 = treinador1.getPokesalInicial();
+        PokeSal pokesal2 = treinador2.getPokesalInicial();
 
         if (pokesal1.getSpd() >= pokesal2.getSpd()) {
             return pokesal1;
@@ -42,12 +42,12 @@ public class Batalha {
     // Executa uma rodada simples: quem tem mais SPD ataca primeiro com o golpe indicado.
     public void proximoTurno(Golpe golpeTreinador1, Golpe golpeTreinador2) {
 
-        Pokesal1 = treinador1.getPokesalInicial();
-        Pokesal2 = treinador2.getPokesalInicial();
+        PokeSal pokesal1 = treinador1.getPokesalInicial();
+        PokeSal pokesal2 = treinador2.getPokesalInicial();
 
         System.out.println("\n--- Rodada " + rodadaAtual + " ---");
 
-        Pokesal primeiro = determinarIniciativa();
+        PokeSal primeiro = determinarIniciativa();
 
         if (primeiro == pokesal1) {
             pokesal1.atacar(pokesal2, golpeTreinador1, terreno);
@@ -74,8 +74,8 @@ public class Batalha {
 
     // Aplica status (queimado, envenenado, paralisado) e efeito de terreno no final do turno.
     public void aplicarEfeitosFimDeTurno() {
-        Pokesal pokesal1 = treinador1.getPokesalInicial();
-        Pokesal pokesal2 = treinador2.getPokesalInicial();
+        PokeSal pokesal1 = treinador1.getPokesalInicial();
+        PokeSal pokesal2 = treinador2.getPokesalInicial();
 
         aplicarStatusEmPokesal(pokesal1);
         aplicarStatusEmPokesal(pokesal2);
@@ -84,7 +84,7 @@ public class Batalha {
         terreno.aplicarEfeitoPassivo(pokesal2);
     }
 
-    private void aplicarStatusEmPokesal(Pokesal pokesal) {
+    private void aplicarStatusEmPokesal(PokeSal pokesal) {
         for (int i = 0; i < pokesal.getStatus().size(); i++) {
             StatusEffect efeito = pokesal.getStatus().get(i);
             efeito.aplicarEfeito(pokesal);
@@ -93,8 +93,8 @@ public class Batalha {
 
     // Verifica se a batalha já acabou (algum Pokesal morreu).
     public boolean verificarFimBatalha() {
-        Pokesal pokesal1 = treinador1.getPokesalInicial();
-        Pokesal pokesal2 = treinador2.getPokesalInicial();
+        PokeSal pokesal1 = treinador1.getPokesalInicial();
+        PokeSal pokesal2 = treinador2.getPokesalInicial();
 
         if (!pokesal1.estaVivo()) {
             System.out.println("\n" + treinador2.getNome() + " venceu a batalha!");
@@ -107,4 +107,4 @@ public class Batalha {
         return false;
     }
 }
-}
+

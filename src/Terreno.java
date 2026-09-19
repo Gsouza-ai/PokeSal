@@ -1,7 +1,7 @@
     public enum Terreno {
     ASFALTO_QUENTE,
     POCA_CHUVA,
-    CANTEIRO_CENTRAL
+    CANTEIRO_CENTRAL;
 
     // verifica se o terreno é do mesmo tipo do pokesal e aplica o efeito
     public double aplicarEfeitoAtivo(Golpe golpe, double danoBase) {
@@ -18,7 +18,7 @@
     }
 
     // Efeito que acontece em cada pokesal tipo planta.
-        public void aplicarEfeitoPassivo(Pokesal pokesal) {
+        public void aplicarEfeitoPassivo(PokeSal pokesal) {
         if (this == CANTEIRO_CENTRAL && pokesal.getTipo() == TipoElemental.PLANTA) {
             double cura = pokesal.getHpMaximo() * 0.05; 
             pokesal.curar(cura);
@@ -27,4 +27,4 @@
     }
 }
 
-}
+

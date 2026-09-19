@@ -30,7 +30,7 @@ public class Golpe {
     }
 
     // Executa o golpe e devolve o dano final causado e classe tsunami sobrescreve esse metodo
-    public double executar(Pokesal atacante, Pokesal defensor, Terreno terreno) {
+    public double executar(PokeSal atacante, PokeSal defensor, Terreno terreno) {
 
         //  testa se o golpe acerta, usando a precisão
         double sorteioPrecisao = Math.random();
@@ -46,7 +46,7 @@ public class Golpe {
         }
 
         // aplica a vantagem elemental
-        double multiplicador = tipo.calcularMultiplicador(defensor.getTipo());
+        double multiplicador = tipoElemental.calcularMultiplicador(defensor.getTipo());
         dano = dano * multiplicador;
 
         //  aplica o efeito do terreno 
@@ -62,4 +62,6 @@ public class Golpe {
 
         return dano;
     }
+
+
 }

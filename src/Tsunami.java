@@ -1,10 +1,16 @@
 // Tsunami pode ser usado 1 vez por batalha e deixa o Pokesal sem atacar na rodada seguinte.
-public class Tsunami extends Golpe {
+/**
+ * Classe do método Tsunami.
+ * */
 
+public class Tsunami extends Golpe {
     private boolean jaUtilizadoNaBatalha;
 
+    /**
+     * Construtor Super de Tsunami.
+     * **/
     public Tsunami() {
-     super("Tsunami", TipoElemental.AGUA, 40, 1.0);// poder base alto, precisão de 100%, tipo água
+        super("Tsunami", TipoElemental.AGUA, 40, 1.0);// poder base alto, precisão de 100%, tipo água
         this.jaUtilizadoNaBatalha = false;
     }
 
@@ -13,8 +19,7 @@ public class Tsunami extends Golpe {
     }
 
     @Override
-    public double executar(Pokesal atacante, Pokesal defensor, Terreno terreno) {
-
+    public double executar(PokeSal atacante, PokeSal defensor, Terreno terreno) {
         if (jaUtilizadoNaBatalha) {
             System.out.println("Tsunami já foi usado nesta batalha! " + atacante.getNome() + " não pode usar de novo.");
             return 0;

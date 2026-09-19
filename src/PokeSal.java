@@ -47,8 +47,9 @@ public class PokeSal {
         return golpes;
     }
 
-    public void setGolpes(List<Golpe> golpes) {
-        this.golpes = golpes;
+    public void adicionarGolpe(Golpe golpe) {
+        golpes.add(golpe);
+
     }
 
     public List<StatusEffect> getStatus() {
@@ -113,7 +114,7 @@ public class PokeSal {
             System.out.println(nome + " está exausto e não pode atacar nesta rodada!");
             return 0;
         }
-        return golpe.executar();
+        return golpe.executar(this, alvo, terreno);
     }
 
     // Recebe dano e não deixa o HP ficar negativo.
@@ -151,4 +152,5 @@ public class PokeSal {
     public boolean isAptoAAtacar() {
         return !exaustoTurnoAtual && estaVivo();
     }
+
 }

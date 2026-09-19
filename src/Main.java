@@ -6,8 +6,8 @@ public class Main {
         Treinador treinador2 = new Treinador("Bruno");
 
         // Cria os Pokesal iniciais 
-        Pokesal charSal = new Pokesal("CharSal", 100, 20, 10, 15, TipoElemental.FOGO);
-        Pokesal squirtSal = new Pokesal("SquirtSal", 100, 18, 12, 12, TipoElemental.AGUA);
+        PokeSal charSal = new PokeSal("CharSal", 100, 20, 10, 15, TipoElemental.FOGO);
+        PokeSal squirtSal = new PokeSal("SquirtSal", 100, 18, 12, 12, TipoElemental.AGUA);
 
         // Cada Pokesal ganha alguns golpes
         Golpe labareda = new Golpe("Labareda", TipoElemental.FOGO, 15, 0.9);

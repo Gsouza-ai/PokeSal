@@ -3,7 +3,7 @@ public enum StatusEffect {
     ENVENENADO,
     PARALISADO;
 
-    public void aplicarEfeito(Pokesal pokesal) {
+    public void aplicarEfeito(PokeSal pokesal) {
 
         if (this == QUEIMADO) {
             double danoQueimadura = pokesal.getHpMaximo() * 0.05; // queimado perde HP e tem o ataque reduzido em 5%

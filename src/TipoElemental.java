@@ -1,10 +1,11 @@
     public enum TipoElemental {
     AGUA,
     FOGO,
-    PLANTA
-    private float danoSueperEfetivo= 2.0
-    private float danoPoucoEfetivo= 0.5
-    private float danoNormal= 1.0
+    PLANTA;
+
+    private double danoSueperEfetivo= 2.0;
+    private double danoPoucoEfetivo= 0.5;
+    private double danoNormal= 1.0;
    
         // Esse método calcula o multiplicador de dano
     public double calcularMultiplicador(TipoElemental defensor) {
@@ -21,7 +22,7 @@
             return danoSueperEfetivo; 
         }
         if (this == AGUA && defensor == PLANTA) {
-            return danoPoucoEfetivo5; 
+            return danoPoucoEfetivo;
         }
 
         if (this == PLANTA && defensor == AGUA) {
@@ -35,4 +36,4 @@
         return danoNormal;
     }
 }
-}
+
