@@ -29,6 +29,7 @@
 
 | Atividade / Tarefa  | Responsável | Prazo de Entrega | Status   |
 | :---- | :---- | :---- | :---- |
+| Criação das classes PokeSal, Treinador, Item, Potion, Super Potion e Antidote| Eri Gomes, Graziele Cupertino, Yago Araújo e Victoria Melo | 18/09/2026 | Concluído |
 | Criação das classes Batalha, Mochila, Golpe e tipoElemental | Eri Gomes, Graziele Cupertino, Yago Araújo e Victoria Melo | 20/09/2026 | Concluído |
 | Criação das classes Tsunami, Terreno e main | Eri Gomes, Graziele Cupertino, Yago Araújo e Victoria Melo | 20/09/2026 | Concluído |
 | Revisão dos códigos | Eri Gomes, Graziele Cupertino, Yago Araújo e Victoria Melo | 20/09/2026 | Em andamento |
