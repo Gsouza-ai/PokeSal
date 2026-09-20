@@ -23,7 +23,9 @@
 
 ### **4\. Tópicos Discutidos e Deliberações**
 
-* Criação das classes.
+* Criação das classes
+* Definição dos responsáveis por compartilhar a tela, digitar os códigos e fazer os commits para o git
+* Resultado: Eri Gomes e Yago Araújo.
 
 ### **5\. Distribuição de Atividades (Acompanhamento)**
 
