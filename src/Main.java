@@ -50,7 +50,7 @@ public class Main {
         treinador2.usarItem(new SuperPotion(), batalha.getRodadaAtual());
       }
 
-      // caso de uso Realizar golpe cada um escolhe um golpe para usar na rodada
+      // cada um escolhe um golpe para usar na rodada
       batalha.proximoTurno(labareda, jatoDeAgua);
 
       System.out.println("HP " + charSal.getNome() + ": " + charSal.getHpAtual());
