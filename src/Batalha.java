@@ -79,8 +79,6 @@ public class Batalha {
     aplicarEfeitosFimDeTurno();
 
     // reseta coisas que valem só para 1 rodada
-    pokesal1.setExaustoTurnoAtual(false);
-    pokesal2.setExaustoTurnoAtual(false);
     treinador1.reiniciarEsquiva();
     treinador2.reiniciarEsquiva();
 

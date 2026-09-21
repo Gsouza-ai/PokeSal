@@ -132,6 +132,7 @@ public class PokeSal {
   public float atacar(PokeSal alvo, Golpe golpe, Terreno terreno) {
     if (!isAptoAtacar()) {
       System.out.println(nome + " está exausto e não pode atacar nesta rodada!");
+      setExaustoTurnoAtual(false);
       return 0;
     }
     return golpe.executar(this, alvo, terreno);
