@@ -43,7 +43,7 @@ public class Main {
     int limiteDeRodadasDeSeguranca = 10;
 
     while (!batalha.verificarFimBatalha() && batalha.getRodadaAtual()
-            <= limiteDeRodadasDeSeguranca) {
+        <= limiteDeRodadasDeSeguranca) {
 
       // a partir da rodada 2 o treinador2 usa um item em vez de atacar
       if (batalha.getRodadaAtual() == 2) {
@@ -62,5 +62,6 @@ public class Main {
       System.out.println("HP " + charSal.getNome() + ": " + charSal.getHpAtual());
       System.out.println("HP " + squirtSal.getNome() + ": " + squirtSal.getHpAtual());
     }
+    System.out.println("\n=== Fim da batalha ===");
   }
 }
