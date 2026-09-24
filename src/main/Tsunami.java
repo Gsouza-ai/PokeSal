@@ -1,3 +1,4 @@
+package main;
 /**
  * Classe Tsunami.
  * Tsunami pode ser usado 1 vez por batalha e deixa o Pokesal sem atacar na rodada seguinte.

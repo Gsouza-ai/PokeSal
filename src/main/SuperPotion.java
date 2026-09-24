@@ -1,3 +1,4 @@
+package main;
 /**
  * Classe super poção.
  **/
