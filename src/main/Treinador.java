@@ -1,4 +1,7 @@
 package main;
+
+import exception.LimiteDeItensExcedidoException;
+
 /**
  * Classe treinador.
  **/
@@ -54,12 +57,17 @@ public class Treinador {
    * @param rodadaAtual mostra qual a rodada atual.
    **/
   public void usarItem(Item item, int rodadaAtual) {
-    boolean podeUsarItem = mochila.podeUsarItem(rodadaAtual, itensUsadosNaBatalha);
-    if (!podeUsarItem) {
-      return;
+    try {
+      boolean podeUsarItem = mochila.podeUsarItem(rodadaAtual, itensUsadosNaBatalha);
+      if (!podeUsarItem) {
+        System.out.println("Itens só podem ser usados a partir da 2ª rodada!");
+        return;
+      }
+      item.aplicarEfeito(pokesalInicial);
+      itensUsadosNaBatalha++;
+    } catch (LimiteDeItensExcedidoException e) {
+      System.out.println(e.getMessage());
     }
-    item.aplicarEfeito(pokesalInicial);
-    itensUsadosNaBatalha++;
   }
 
   /**

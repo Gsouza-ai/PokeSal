@@ -1,4 +1,6 @@
 package main;
+import exception.LimiteDeItensExcedidoException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,15 +46,14 @@ public class Mochila {
    *
    * @param rodadaAtual mostra a rodada atual.
    * @param itensUsadosNaBatalha mostra os itens utilizados na batalha.
+   * @throws LimiteDeItensExcedidoException se o limite de itens por batalha já foi atingido.
    **/
   public boolean podeUsarItem(int rodadaAtual, int itensUsadosNaBatalha) {
     if (rodadaAtual < 2) {
-      System.out.println("Itens só podem ser usados a partir da 2ª rodada!");
       return false;
     }
     if (itensUsadosNaBatalha >= limitePorBatalha) {
-      System.out.println("Limite de itens por batalha já foi atingido!");
-      return false;
+      throw new LimiteDeItensExcedidoException("Limite de itens por batalha já foi atingido!");
     }
     return true;
   }
