@@ -14,6 +14,5 @@ public class Antidote extends Item {
   @Override
   public void aplicarEfeito(PokeSal pokesal) {
     pokesal.limparStatus(); // remove todos os status (queimado, envenenado, paralisado)
-    System.out.println(pokesal.getNome() + " usou Antidote e removeu os status negativos!");
   }
 }

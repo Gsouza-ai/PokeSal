@@ -6,9 +6,9 @@ import exception.LimiteDeItensExcedidoException;
  * Classe treinador.
  **/
 public class Treinador {
-  private String nomeTreinador;
+  private final String nomeTreinador;
   private PokeSal pokesalInicial;
-  private Mochila mochila;
+  private final Mochila mochila;
   private boolean usouEsquivaNaRodada;
   private int itensUsadosNaBatalha;
 
@@ -47,27 +47,29 @@ public class Treinador {
    **/
   public void escolherInicial(PokeSal pokesal) {
     this.pokesalInicial = pokesal;
-    System.out.println(nomeTreinador + " escolheu " + pokesal.getNome() + " como Pokesal inicial!");
   }
 
   /**
-   * Usa um item da mochila na rodadaAtual informada.
+   * Usa um item da mochila na rodadaAtual informada. O item usado sai da mochila.
    *
    * @param item passa o item da mochila.
    * @param rodadaAtual mostra qual a rodada atual.
+   * @return true se o item foi usado; false se a regra de uso bloqueou (antes da 2ª rodada
+   *     ou limite de itens por batalha atingido).
    **/
-  public void usarItem(Item item, int rodadaAtual) {
+  public boolean usarItem(Item item, int rodadaAtual) {
     try {
-      boolean podeUsarItem = mochila.podeUsarItem(rodadaAtual, itensUsadosNaBatalha);
-      if (!podeUsarItem) {
-        System.out.println("Itens só podem ser usados a partir da 2ª rodada!");
-        return;
+      if (!mochila.podeUsarItem(rodadaAtual, itensUsadosNaBatalha)) {
+        return false;
       }
-      item.aplicarEfeito(pokesalInicial);
-      itensUsadosNaBatalha++;
     } catch (LimiteDeItensExcedidoException e) {
-      System.out.println(e.getMessage());
+      // limite atingido: o uso é bloqueado, mas a batalha segue normalmente
+      return false;
     }
+    item.aplicarEfeito(pokesalInicial);
+    mochila.removerItem(item);
+    itensUsadosNaBatalha++;
+    return true;
   }
 
   /**
@@ -75,11 +77,9 @@ public class Treinador {
    **/
   public boolean esquivar() {
     if (usouEsquivaNaRodada) {
-      System.out.println(nomeTreinador + " já esquivou nesta rodada!");
       return false;
     }
     usouEsquivaNaRodada = true;
-    System.out.println(nomeTreinador + " esquivou do ataque!");
     return true;
   }
 
@@ -88,5 +88,17 @@ public class Treinador {
    **/
   public void reiniciarEsquiva() {
     usouEsquivaNaRodada = false;
+  }
+
+  /**
+   * Prepara o treinador para uma nova batalha: zera o contador de itens, a esquiva
+   * e restaura o Pokesal inicial (se houver).
+   **/
+  public void prepararParaNovaBatalha() {
+    itensUsadosNaBatalha = 0;
+    usouEsquivaNaRodada = false;
+    if (pokesalInicial != null) {
+      pokesalInicial.restaurarParaNovaBatalha();
+    }
   }
 }

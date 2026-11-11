@@ -1,12 +1,14 @@
 package main;
+
 /**
- * Classe golpe.
+ * Classe golpe. Guarda os dados do golpe e o cálculo do dano bruto; a sorte
+ * (precisão e crítico) e o terreno ficam no ExecutorDeGolpe.
  **/
 public class Golpe {
-  private String nomeDoGolpe;
-  private TipoElemental tipoElemental;
-  private float poderBase;
-  private float precisao;
+  private final String nomeDoGolpe;
+  private final TipoElemental tipoElemental;
+  private final float poderBase;
+  private final float precisao;
 
   /**
    * Método construtor.
@@ -14,9 +16,13 @@ public class Golpe {
    * @param nomeDoGolpe passa o nome do golpe.
    * @param tipoElemental passa o tipo elemental do golpe.
    * @param poderBase passa o valor do poder base.
-   * @param precisao passa o valor da precisão do golpe.
+   * @param precisao passa a precisão do golpe, de 0 a 100.
+   * @throws IllegalArgumentException se a precisão estiver fora do intervalo de 0 a 100.
    **/
   public Golpe(String nomeDoGolpe, TipoElemental tipoElemental, float poderBase, float precisao) {
+    if (precisao < 0 || precisao > 100) {
+      throw new IllegalArgumentException("A precisão deve estar entre 0 e 100.");
+    }
     this.nomeDoGolpe = nomeDoGolpe;
     this.tipoElemental = tipoElemental;
     this.poderBase = poderBase;
@@ -40,44 +46,48 @@ public class Golpe {
   }
 
   /**
-   * Executa o golpe e devolve o dano final causado.
-   * A classe tsunami sobrescreve esse metodo.
+   * Calcula o dano antes do terreno e do crítico: poder + ataque - defesa (mínimo 0),
+   * multiplicado pela vantagem elemental. Golpes especiais sobrescrevem este método.
    *
-   * @param atacante passa o pokesal que irá atacar.
-   * @param defensor passa o pokesal que irá se defender.
-   * @param terreno passa o terreno.
+   * @param atacante Pokésal que ataca.
+   * @param defensor Pokésal que recebe o golpe.
+   * @return dano calculado.
    **/
-  public float executar(PokeSal atacante, PokeSal defensor, Terreno terreno) {
-    // Math.random retorna double, precisa converter pra float
-    float sorteioPrecisao = (float) Math.random();
-    if (sorteioPrecisao > precisao) {
-      System.out.println(atacante.getNome() + " usou " + nomeDoGolpe + ", mas errou o golpe!");
-      return 0;
-    }
-
-    // calcula o dano base
+  public float calcularDano(PokeSal atacante, PokeSal defensor) {
     float dano = poderBase + atacante.getAtk() - defensor.getDef();
     if (dano < 0) {
       dano = 0;
     }
+    return dano * tipoElemental.calcularMultiplicador(defensor.getTipo());
+  }
 
-    // aplica a vantagem elemental
-    float multiplicador = tipoElemental.calcularMultiplicador(defensor.getTipo());
-    dano = dano * multiplicador;
+  /**
+   * Indica se o golpe pode ser usado agora (golpes especiais podem ter limite de uso).
+   **/
+  public boolean podeSerUsado() {
+    return true;
+  }
 
-    // aplica o efeito do terreno
-    if (terreno != null) {
-      dano = terreno.aplicarEfeitoAtivo(this, dano);
-    }
+  /**
+   * Indica se o golpe pode causar acerto crítico.
+   **/
+  public boolean permiteCritico() {
+    return true;
+  }
 
-    // arredonda pra ter valores "inteiros" de dano, como num jogo de verdade
-    dano = Math.round(dano);
+  /**
+   * Gancho chamado depois que o golpe acertou o alvo (efeitos colaterais no atacante).
+   *
+   * @param atacante Pokésal que atacou.
+   **/
+  public void aposAcertar(PokeSal atacante) {
+    // golpes comuns não têm efeito colateral
+  }
 
-    // aplica o dano no defensor
-    defensor.receberDano(dano);
-    System.out.println(atacante.getNome() + " usou " + nomeDoGolpe + " em " + defensor.getNome()
-        + " e causou " + dano + " de dano!");
-
-    return dano;
+  /**
+   * Restaura o estado do golpe para uma nova batalha.
+   **/
+  public void reiniciarParaNovaBatalha() {
+    // golpes comuns não guardam estado entre batalhas
   }
 }

@@ -29,7 +29,7 @@ public class PokeSal {
    *@param tipoElemental define o tipo elemental do pokesal.
    **/
   public PokeSal(String nome, float hpMaximo, float atk,
-      float def, float spd, TipoElemental tipoElemental) {
+                 float def, float spd, TipoElemental tipoElemental) {
     this.nome = nome;
     this.hpMaximo = hpMaximo;
     this.hpAtual = hpMaximo;
@@ -95,7 +95,13 @@ public class PokeSal {
     this.def = def;
   }
 
+  /**
+   * Velocidade efetiva: reduzida pela paralisia enquanto o status estiver ativo.
+   **/
   public float getSpd() {
+    if (status.contains(StatusEffect.PARALISADO)) {
+      return spd * StatusEffect.MULTIPLICADOR_VELOCIDADE_PARALISADO;
+    }
     return spd;
   }
 
@@ -103,7 +109,13 @@ public class PokeSal {
     this.spd = spd;
   }
 
+  /**
+   * Ataque efetivo: reduzido pela queimadura enquanto o status estiver ativo.
+   **/
   public float getAtk() {
+    if (status.contains(StatusEffect.QUEIMADO)) {
+      return atk * StatusEffect.MULTIPLICADOR_ATAQUE_QUEIMADO;
+    }
     return atk;
   }
 
@@ -125,18 +137,6 @@ public class PokeSal {
 
   public void setHpMaximo(float hpMaximo) {
     this.hpMaximo = hpMaximo;
-  }
-
-  /**
-   * Ataca outro Pokesal usando um golpe específico.
-   **/
-  public float atacar(PokeSal alvo, Golpe golpe, Terreno terreno) {
-    if (!isAptoAtacar()) {
-      System.out.println(nome + " está exausto e não pode atacar nesta rodada!");
-      setExaustoTurnoAtual(false);
-      return 0;
-    }
-    return golpe.executar(this, alvo, terreno);
   }
 
   /**
@@ -165,7 +165,6 @@ public class PokeSal {
   public void aplicarStatus(StatusEffect novoStatus) {
     if (!status.contains(novoStatus)) {
       status.add(novoStatus);
-      System.out.println(nome + " agora está com o status: " + novoStatus);
     }
   }
 
@@ -188,5 +187,17 @@ public class PokeSal {
    **/
   public boolean isAptoAtacar() {
     return !exaustoTurnoAtual && estaVivo();
+  }
+
+  /**
+   * Restaura o Pokesal para começar uma nova batalha (HP cheio, sem status, sem exaustão).
+   **/
+  public void restaurarParaNovaBatalha() {
+    hpAtual = hpMaximo;
+    status.clear();
+    exaustoTurnoAtual = false;
+    for (Golpe golpe : golpes) {
+      golpe.reiniciarParaNovaBatalha();
+    }
   }
 }

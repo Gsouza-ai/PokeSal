@@ -1,9 +1,12 @@
 package main;
+
 /**
  * Classe Tsunami.
  * Tsunami pode ser usado 1 vez por batalha e deixa o Pokesal sem atacar na rodada seguinte.
+ * Causa dano fixo de 20% do HP máximo do defensor, tem precisão 100 e não causa crítico.
  **/
 public class Tsunami extends Golpe {
+  private static final float PERCENTUAL_DANO = 0.20f;
   private boolean jaUtilizadoNaBatalha;
 
   /**
@@ -11,7 +14,7 @@ public class Tsunami extends Golpe {
    **/
   public Tsunami() {
     // nome do golpe, tipo água, poder base alto, precisão de 100%
-    super("Tsunami", TipoElemental.AGUA, 40, 1.0f);
+    super("Tsunami", TipoElemental.AGUA, 40, 100f);
     this.jaUtilizadoNaBatalha = false;
   }
 
@@ -20,30 +23,29 @@ public class Tsunami extends Golpe {
   }
 
   @Override
-  public float executar(PokeSal atacante, PokeSal defensor, Terreno terreno) {
-    if (jaUtilizadoNaBatalha) {
-      System.out.println("Tsunami já foi usado nesta batalha! " + atacante.getNome()
-          + " não pode usar de novo.");
-      return 0;
-    }
+  public float calcularDano(PokeSal atacante, PokeSal defensor) {
+    return defensor.getHpMaximo() * PERCENTUAL_DANO;
+  }
 
-    // dano de 20% do HP máximo do defensor
-    float danoTsunami = defensor.getHpMaximo() * 0.20f;
+  @Override
+  public boolean podeSerUsado() {
+    return !jaUtilizadoNaBatalha;
+  }
 
-    // efeito do terreno também pode alterar o dano
-    if (terreno != null) {
-      danoTsunami = terreno.aplicarEfeitoAtivo(this, danoTsunami);
-    }
+  @Override
+  public boolean permiteCritico() {
+    return false;
+  }
 
-    defensor.receberDano(danoTsunami);
+  @Override
+  public void aposAcertar(PokeSal atacante) {
     jaUtilizadoNaBatalha = true;
-
     // o Pokesal fica exausto e não ataca na próxima rodada
     atacante.setExaustoTurnoAtual(true);
+  }
 
-    System.out.println(atacante.getNome() + " usou TSUNAMI em " + defensor.getNome()
-        + " e causou " + danoTsunami + " de dano! Agora ficará exausto na próxima rodada.");
-
-    return danoTsunami;
+  @Override
+  public void reiniciarParaNovaBatalha() {
+    jaUtilizadoNaBatalha = false;
   }
 }
