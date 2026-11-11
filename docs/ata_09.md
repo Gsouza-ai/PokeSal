@@ -44,9 +44,9 @@
 
 | Atividade / Tarefa | Responsável | Prazo de Entrega | Status |
 | :---- | :---- | :---- | :---- |
-| Entrega dos códigos refatorados | Eri Gomes, Graziele Cupertino e Victoria Melo | 06/11/2026 | Pendente |
-| Entrega do Diagrama de Classe com novos requisitos | Eri Gomes e Yago Araújo | 06/11/2026 |Pendente |
-| Entrega do Diagrama de Sequência | Graziele Cupertino e Victoria Ribeiro | 06/11/2026 | Pendente|
+| Entrega dos códigos refatorados | Eri Gomes, Graziele Cupertino e Victoria Melo | 06/11/2026 | Entregue |
+| Entrega do Diagrama de Classe com novos requisitos | Eri Gomes | 06/11/2026 |Entregue |
+| Entrega do Diagrama de Sequência | Graziele Cupertino e Victoria Ribeiro | 06/11/2026 | Entregue|
 
 
 ### **6. Encerramento**
