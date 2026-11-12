@@ -6,8 +6,7 @@
 | :---- | :---- |
 | **Data e Horário:** | 04/11/2026 das 20:37 às 21:50 |
 | **Local / Plataforma:** | Google Meet |
-| **Fase do Projeto:** | Fase 03 - Isolamento com Mockito e Integração Contínua
- |
+| **Fase do Projeto:** | Fase 03 - Isolamento com Mockito e Integração Contínua|
 
 
 ### **2. Participantes e Assinaturas**
@@ -32,6 +31,7 @@
 **4.1 Revisão das classes**
 
 •   Revisão conjunta das classes do sistema: `Batalha`, `PokeSal`, `Treinador`, `Golpe`, `Tsunami`, `Mochila`, `Item` (e seus derivados `Potion`, `SuperPotion` e `Antidote`), `StatusEffect`, `Terreno`, `TipoElemental` e `Main`.
+
 •   Identificação de pontos de código a corrigir.
 
 **4.2 Próximos passos**
