@@ -51,4 +51,4 @@
 
 ### **6. Encerramento**
 
-Sem mais assuntos a tratar, a reunião foi encerrada às 21:50. Todos os membros leram, concordaram e assinaram este documento, menos Yago Araújo que não se fez presente na reunião e não deu satisfação.
+Sem mais assuntos a tratar, a reunião foi encerrada às 21:50, A próxima reunião ficou agendada para 07/11/2026 às 20h00 . Todos os membros leram, concordaram e assinaram este documento, menos Yago Araújo que não se fez presente na reunião e não deu satisfação.
