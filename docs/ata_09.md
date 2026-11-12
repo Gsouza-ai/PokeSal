@@ -36,8 +36,8 @@
 
 **4.2 Próximos passos**
 
-•  Entregar o código corrigido da versão 01 do PokeSal.
-•  Entregar Diagramas de Classes e de Sequência em reunião.
+•  Começar a fazer as classes da nova regra de négocio.
+
 
 
 ### **5. Distribuição de Atividades (Acompanhamento)**
