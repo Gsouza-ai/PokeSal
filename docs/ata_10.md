@@ -6,8 +6,7 @@
 | :---- | :---- |
 | **Data e Horário:** | 07/11/2026 das 20:20 às 21:50 |
 | **Local / Plataforma:** | Google Meet |
-| **Fase do Projeto:** | Fase 03 - Isolamento com Mockito e Integração Contínua
- |
+| **Fase do Projeto:** | Fase 03 - Isolamento com Mockito e Integração Contínua|
 
 
 ### **2. Participantes e Assinaturas**
@@ -30,12 +29,12 @@
 
 **4.1 Definição dos novos requisitos Autorais**
 
-•  • Ideias levantadas: (1) decisão de batalha por limite de rodadas, com desempate por maior HP; (2) alerta de HP baixo; (3) ranking de treinadores do torneio, baseado em vitórias.  
-• **Decisão:** a equipe adotou como requisitos autorais (1) a **decisão por limite de rodadas com desempate** e (2) o **ranking de treinadores**.
+•  Ideias levantadas: decisão de batalha por limite de rodadas, com desempate por maior HP; alerta de HP baixo; ranking de treinadores do torneio, baseado em vitórias.  
+• **Decisão:** a equipe adotou como requisitos autorais a **decisão por limite de rodadas com desempate** e o **ranking de treinadores**.
 
 **4.2 Próximos passos**
 
-•  Entregar o código completo.
+•  Entregar as classes novas.
 • Montar Testes com Mockito
 •  Fazer varredura com SonarQube.
 • Medir cobertura com JaCoCo.
@@ -55,4 +54,4 @@
 
 ### **6. Encerramento**
 
-Sem mais assuntos a tratar, a reunião foi encerrada às 21:55. Todos os membros leram, concordaram e assinaram este documento, menos Yago Araújo que não se fez presente na reunião e não deu satisfação. 
+Sem mais assuntos a tratar, a reunião foi encerrada às 21:55, A próxima reunião ficou agendada para 12/11/2026 às 19h00. Todos os membros leram, concordaram e assinaram este documento, menos Yago Araújo que não se fez presente na reunião e não deu satisfação. 
