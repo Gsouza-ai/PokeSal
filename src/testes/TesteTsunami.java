@@ -1,82 +1,115 @@
 package testes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
+import java.time.Clock;
+import main.ExecutorDeGolpe;
+import main.GeradorAleatorio;
+import main.Golpe;
 import main.PokeSal;
+import main.ResultadoAtaque;
+import main.ServicoTerreno;
+import main.ServicoTerrenoPadrao;
 import main.Terreno;
 import main.TipoElemental;
 import main.Tsunami;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+/**
+ * Testes do golpe especial Tsunami, executado pelo ExecutorDeGolpe.
+ */
+@ExtendWith(MockitoExtension.class)
 public class TesteTsunami {
-	
-	@Test
+
+    @Mock
+    private GeradorAleatorio gerador;
+
+    @Mock
+    private ServicoTerreno servicoTerreno;
+
+    @Test
     @DisplayName("Deve causar 20% do HP máximo de dano e deixar o atacante exausto")
     public void testTsunamiPrimeiroUso() {
-        // 1. Preparação
         PokeSal atacante = new PokeSal("AtacanteSal", 100f, 15f, 10f, 20f, TipoElemental.AGUA);
-        // Defensor com 200 de HP Máximo (20% de 200 = 40 de dano)
         PokeSal defensor = new PokeSal("DefensorSal", 200f, 15f, 10f, 10f, TipoElemental.FOGO);
-        
         Tsunami tsunami = new Tsunami();
+        ExecutorDeGolpe executor = new ExecutorDeGolpe(gerador, servicoTerreno);
+        // Tsunami tem precisão 100: qualquer sorteio em [0,1) acerta.
+        when(gerador.proximoDouble()).thenReturn(0.0);
+        when(servicoTerreno.aplicarEfeitoAtivo(any(Terreno.class), any(Golpe.class), anyFloat()))
+                .thenAnswer(AdditionalAnswers.returnsLastArg());
 
-        // 2. Ação
-        // Executa sem terreno (null)
-        float danoCausado = tsunami.executar(atacante, defensor, null);
+        ResultadoAtaque resultado = executor.executar(atacante, defensor, tsunami,
+                Terreno.CANTEIRO_CENTRAL);
 
-        // 3. Verificações
-        // O dano deve ser 40 (20% de 200)
-        assertEquals(40.0f, danoCausado, "O dano deve ser 20% do HP Máximo do defensor");
-        
-        // A vida atual do defensor deve ter caído de 200 para 160
-        assertEquals(160.0f, defensor.getHpAtual(), "O HP do defensor não foi reduzido corretamente");
-        
-        // O atacante deve estar exausto
-        assertTrue(atacante.isExaustoTurnoAtual(), "O atacante deveria ficar exausto após usar o Tsunami");
-        
-        // O golpe deve estar marcado como utilizado
-        assertTrue(tsunami.isJaUtilizadoNaBatalha(), "O status jaUtilizadoNaBatalha deveria ser true");
+        assertEquals(40.0f, resultado.dano(), 0.001f, "20% de 200");
+        assertEquals(160.0f, defensor.getHpAtual(), 0.001f);
+        assertTrue(atacante.isExaustoTurnoAtual(), "o atacante deve ficar exausto");
+        assertTrue(tsunami.isJaUtilizadoNaBatalha());
+        assertFalse(resultado.critico());
+        // Tsunami não admite crítico: só o sorteio de precisão é consumido.
+        verify(gerador, times(1)).proximoDouble();
     }
 
     @Test
-    @DisplayName("Não deve causar dano se for usado pela segunda vez na batalha")
+    @DisplayName("Não deve causar dano nem sortear nada se for usado pela segunda vez")
     public void testTsunamiUsoRepetido() {
-        // Preparação
         PokeSal atacante = new PokeSal("AtacanteSal", 100f, 15f, 10f, 20f, TipoElemental.AGUA);
         PokeSal defensor = new PokeSal("DefensorSal", 100f, 15f, 10f, 10f, TipoElemental.FOGO);
         Tsunami tsunami = new Tsunami();
+        ExecutorDeGolpe executor = new ExecutorDeGolpe(gerador, servicoTerreno);
+        when(gerador.proximoDouble()).thenReturn(0.0);
+        when(servicoTerreno.aplicarEfeitoAtivo(any(Terreno.class), any(Golpe.class), anyFloat()))
+                .thenAnswer(AdditionalAnswers.returnsLastArg());
 
-        // Ação: Usa a primeira vez (Funciona)
-        tsunami.executar(atacante, defensor, null);
-        
-        // Ação: Tenta usar a SEGUNDA vez (Deve falhar e retornar 0)
-        float danoSegundoUso = tsunami.executar(atacante, defensor, null);
+        executor.executar(atacante, defensor, tsunami, Terreno.CANTEIRO_CENTRAL);
+        ResultadoAtaque segundoUso = executor.executar(atacante, defensor, tsunami,
+                Terreno.CANTEIRO_CENTRAL);
 
-        // Verificação
-        assertEquals(0.0f, danoSegundoUso, "O Tsunami não pode causar dano na segunda vez");
-        // Como o defensor tinha 100 de HP, tomou 20 no primeiro uso, sobrou 80.
-        // No segundo uso, a vida tem que continuar 80.
-        assertEquals(80.0f, defensor.getHpAtual() );
+        assertEquals(0.0f, segundoUso.dano(), 0.001f);
+        assertEquals(80.0f, defensor.getHpAtual(), 0.001f, "só o 1º uso causou dano");
+        verify(gerador, times(1)).proximoDouble(); // o 2º uso nem chegou a sortear
     }
 
     @Test
-    @DisplayName("Deve aplicar bônus de dano se o terreno for POCA_CHUVA")
+    @DisplayName("Deve aplicar bônus de dano se o terreno for POCA_CHUVA (serviço real)")
     public void testTsunamiComTerrenoPocaChuva() {
-        // Preparação
         PokeSal atacante = new PokeSal("AtacanteSal", 100f, 15f, 10f, 20f, TipoElemental.AGUA);
-        // Defensor com 100 de HP. 20% seria 20 de dano normal.
         PokeSal defensor = new PokeSal("DefensorSal", 100f, 15f, 10f, 10f, TipoElemental.PLANTA);
-        Tsunami tsunami = new Tsunami();
+        // Aqui o ServicoTerrenoPadrao é real: queremos o bônus de 10% de verdade (a Poça de Chuva
+        // não consulta o relógio, então Clock.systemDefaultZone() é suficiente).
+        ExecutorDeGolpe executor = new ExecutorDeGolpe(gerador,
+                new ServicoTerrenoPadrao(Clock.systemDefaultZone()));
+        when(gerador.proximoDouble()).thenReturn(0.0);
 
-        // Ação: Executa COM o terreno POCA_CHUVA
-        float danoCausado = tsunami.executar(atacante, defensor, Terreno.POCA_CHUVA);
+        ResultadoAtaque resultado = executor.executar(atacante, defensor, new Tsunami(),
+                Terreno.POCA_CHUVA);
 
-        // Verificação
-        // Dano base = 20. Bônus da chuva = +10%. Dano final = 22.
-        assertEquals(22.0f, danoCausado, "O dano deve ser aumentado em 10% pela POCA_CHUVA");
+        assertEquals(22.0f, resultado.dano(), 0.001f, "20 + 10% da chuva");
     }
 
+    @Test
+    @DisplayName("reiniciarParaNovaBatalha libera o Tsunami novamente")
+    public void testTsunamiReiniciaParaNovaBatalha() {
+        PokeSal atacante = new PokeSal("AtacanteSal", 100f, 15f, 10f, 20f, TipoElemental.AGUA);
+        Tsunami tsunami = new Tsunami();
+        tsunami.aposAcertar(atacante);
+        assertFalse(tsunami.podeSerUsado());
+
+        tsunami.reiniciarParaNovaBatalha();
+
+        assertTrue(tsunami.podeSerUsado());
+    }
 }

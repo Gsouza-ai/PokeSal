@@ -6,12 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import main.TipoElemental;
 
 public class TesteVantagemElemental {
-	
-	// Substitua pelos valores reais que seu sistema usa
-    private static final float SUPER_EFETIVO = 2.0f; 
+
+    // Substitua pelos valores reais que seu sistema usa
+    private static final float SUPER_EFETIVO = 2.0f;
     private static final float POUCO_EFETIVO = 0.5f;
     private static final float NORMAL = 1.0f;
-    
+
 
     @Test
     @DisplayName("Deve aplicar dano Super Efetivo quando o atacante tem vantagem")
@@ -36,6 +36,6 @@ public class TesteVantagemElemental {
         assertEquals(NORMAL, TipoElemental.AGUA.calcularMultiplicador(TipoElemental.AGUA));
         assertEquals(NORMAL, TipoElemental.PLANTA.calcularMultiplicador(TipoElemental.PLANTA));
     }
-	
+
 
 }

@@ -10,7 +10,7 @@ import main.PokeSal;
 import main.TipoElemental;
 
 public class TesteCalculoDanoBoundaryValues {
-	
+
     @Test
     @DisplayName("Validação de valores limite de HP, ATK e DEF")
     public void testCalculoDanoBoundaryValues() {
@@ -20,7 +20,7 @@ public class TesteCalculoDanoBoundaryValues {
         // LIMITE INFERIOR DO HP (Dano Massivo)      
         // Ação: Tomar um dano muito maior que a vida atual
         poke.receberDano(9999f);
-        
+
         // Verificação: A vida não pode ser -9899, tem que travar no limite mínimo (0)
         assertEquals(0f, poke.getHpAtual(), "O HP não pode ficar negativo ao receber dano extremo.");
         assertFalse(poke.estaVivo(), "O PokeSal não deve estar vivo com 0 de HP.");
@@ -29,7 +29,7 @@ public class TesteCalculoDanoBoundaryValues {
         // LIMITE SUPERIOR DO HP (Cura Massiva)
         // Ãção: Revivemos o PokeSal com 10 de vida
         poke.setHpAtual(10f);
-        
+
         // Ação: Curar um valor absurdamente alto
         poke.curar(9999f);
 
