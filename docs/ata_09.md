@@ -6,8 +6,7 @@
 | :---- | :---- |
 | **Data e Horário:** | 04/11/2026 das 20:37 às 21:50 |
 | **Local / Plataforma:** | Google Meet |
-| **Fase do Projeto:** | Fase 03 - Isolamento com Mockito e Integração Contínua
- |
+| **Fase do Projeto:** | Fase 03 - Isolamento com Mockito e Integração Contínua|
 
 
 ### **2. Participantes e Assinaturas**
@@ -32,12 +31,13 @@
 **4.1 Revisão das classes**
 
 •   Revisão conjunta das classes do sistema: `Batalha`, `PokeSal`, `Treinador`, `Golpe`, `Tsunami`, `Mochila`, `Item` (e seus derivados `Potion`, `SuperPotion` e `Antidote`), `StatusEffect`, `Terreno`, `TipoElemental` e `Main`.
+
 •   Identificação de pontos de código a corrigir.
 
 **4.2 Próximos passos**
 
-•  Entregar o código corrigido da versão 01 do PokeSal.
-•  Entregar Diagramas de Classes e de Sequência em reunião.
+•  Começar a fazer as classes da nova regra de négocio.
+
 
 
 ### **5. Distribuição de Atividades (Acompanhamento)**
@@ -51,4 +51,4 @@
 
 ### **6. Encerramento**
 
-Sem mais assuntos a tratar, a reunião foi encerrada às 21:55. Todos os membros leram, concordaram e assinaram este documento, menos Yago Araújo que não se fez presente na reunião e não deu satisfação.
+Sem mais assuntos a tratar, a reunião foi encerrada às 21:50, A próxima reunião ficou agendada para 07/11/2026 às 20h00 . Todos os membros leram, concordaram e assinaram este documento, menos Yago Araújo que não se fez presente na reunião e não deu satisfação.
