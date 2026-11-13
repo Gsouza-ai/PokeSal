@@ -1,6 +1,11 @@
 package main;
+
+import java.time.Clock;
+import java.util.List;
+import java.util.Random;
+
 /**
- * Classe main.
+ * Classe main. É o único lugar que instancia os colaboradores (composition root).
  **/
 public class Main {
 
@@ -8,61 +13,64 @@ public class Main {
    * Método main.
    **/
   public static void main(String[] args) {
-    // Cria os Pokesal iniciais
-    PokeSal charSal = new PokeSal("CharSal", 100, 20, 10, 15, TipoElemental.FOGO);
-    PokeSal squirtSal = new PokeSal("SquirtSal", 100, 18, 12, 12, TipoElemental.AGUA);
+    RegistroBatalha registro = new RegistroBatalhaConsole(System.out);
+    GeradorAleatorio gerador = new GeradorAleatorioPadrao(new Random());
+    ServicoTerreno servicoTerreno = new ServicoTerrenoPadrao(Clock.systemDefaultZone());
+    RepositorioResultados repositorio = new RepositorioResultadosEmMemoria();
+    ExecutorDeGolpe executor = new ExecutorDeGolpe(gerador, servicoTerreno);
 
-    // Cada Pokesal ganha alguns golpes
-    Golpe labareda = new Golpe("Labareda", TipoElemental.FOGO, 15f, 0.9f);
-    Golpe jatoDeAgua = new Golpe("Jato De Agua", TipoElemental.AGUA, 15f, 0.9f);
-    Golpe tsunami = new Tsunami();
+    batalhaIndividual(registro, gerador, servicoTerreno, repositorio, executor);
 
-    charSal.adicionarGolpe(labareda);
-    squirtSal.adicionarGolpe(jatoDeAgua);
-    squirtSal.adicionarGolpe(tsunami);
+    registro.registrarMensagem("\n\n########## TORNEIO ##########");
+    FabricaDeBatalha fabrica = new FabricaDeBatalhaPadrao(Terreno.CANTEIRO_CENTRAL, executor,
+            servicoTerreno, registro, repositorio, gerador);
+    ServicoRanking ranking = new ServicoRanking(repositorio, registro);
+    Torneio torneio = new Torneio(fabrica, new EstrategiaGolpeMaisForte(), ranking, registro);
+    torneio.disputar(List.of(
+            criarTreinador("Ana", "CharSal", TipoElemental.FOGO),
+            criarTreinador("Bruno", "SquirtSal", TipoElemental.AGUA),
+            criarTreinador("Carla", "BulbaSal", TipoElemental.PLANTA),
+            criarTreinador("Diego", "FlareSal", TipoElemental.FOGO)));
+  }
 
-    // Cria os dois treinadores
-    Treinador treinador1 = new Treinador("Ana");
-    Treinador treinador2 = new Treinador("Bruno");
+  private static void batalhaIndividual(RegistroBatalha registro, GeradorAleatorio gerador,
+                                        ServicoTerreno servicoTerreno, RepositorioResultados repositorio, ExecutorDeGolpe executor) {
+    Treinador ana = criarTreinador("Ana", "CharSal", TipoElemental.FOGO);
+    Treinador bruno = criarTreinador("Bruno", "SquirtSal", TipoElemental.AGUA);
+    ana.getMochila().adicionarItem(new Potion());
+    Item superPotion = new SuperPotion();
+    bruno.getMochila().adicionarItem(superPotion);
 
-    // Cada treinador escolhe seu inicial
-    treinador1.escolherInicial(charSal);
-    treinador2.escolherInicial(squirtSal);
+    Golpe labareda = ana.getPokesalInicial().getGolpes().get(0);
+    Golpe jatoDeAgua = bruno.getPokesalInicial().getGolpes().get(0);
+    Golpe tsunami = bruno.getPokesalInicial().getGolpes().get(1);
 
-    // Escolhe o terreno da batalha
-    Terreno terreno = Terreno.ASFALTO_QUENTE;
-
-    // Coloca uns itens na mochila de cada treinador
-    treinador1.getMochila().adicionarItem(new Potion());
-    treinador2.getMochila().adicionarItem(new SuperPotion());
-
-    // Cria e inicia a batalha
-    Batalha batalha = new Batalha(treinador1, treinador2, terreno);
+    Batalha batalha = new Batalha(new Confronto(ana, bruno, Terreno.ASFALTO_QUENTE), executor,
+            servicoTerreno, registro, repositorio, gerador);
     batalha.iniciarBatalha();
 
-    // Roda algumas rodadas até alguém vencer
-    int limiteDeRodadasDeSeguranca = 10;
-
     while (!batalha.verificarFimBatalha() && batalha.getRodadaAtual()
-        <= limiteDeRodadasDeSeguranca) {
-
-      // a partir da rodada 2 o treinador2 usa um item em vez de atacar
+            <= Batalha.LIMITE_DE_RODADAS) {
+      // na rodada 2 o Bruno usa um item (no início do turno) e o Tsunami
+      Golpe golpeBruno = jatoDeAgua;
       if (batalha.getRodadaAtual() == 2) {
-        treinador2.usarItem(new SuperPotion(), batalha.getRodadaAtual());
+        batalha.usarItem(bruno, superPotion);
+        golpeBruno = tsunami;
       }
-
-      // a partir da rodada 3 o treinador2 usa Tsunami em vez de Jato De Agua
-      Golpe golpeTreinador2 = jatoDeAgua;
-      if (batalha.getRodadaAtual() == 2) {
-        golpeTreinador2 = tsunami;
-      }
-
-      // cada um escolhe um golpe para usar na rodada
-      batalha.proximoTurno(labareda, golpeTreinador2);
-
-      System.out.println("HP " + charSal.getNome() + ": " + charSal.getHpAtual());
-      System.out.println("HP " + squirtSal.getNome() + ": " + squirtSal.getHpAtual());
+      batalha.proximoTurno(labareda, golpeBruno);
     }
-    System.out.println("\n=== Fim da batalha ===");
+    registro.registrarMensagem("\n=== Fim da batalha ===");
+  }
+
+  private static Treinador criarTreinador(String nomeTreinador, String nomePokesal,
+                                          TipoElemental tipo) {
+    PokeSal pokesal = new PokeSal(nomePokesal, 100, 20, 10, 15, tipo);
+    pokesal.adicionarGolpe(new Golpe("Golpe " + tipo, tipo, 15f, 90f));
+    if (tipo == TipoElemental.AGUA) {
+      pokesal.adicionarGolpe(new Tsunami());
+    }
+    Treinador treinador = new Treinador(nomeTreinador);
+    treinador.escolherInicial(pokesal);
+    return treinador;
   }
 }
